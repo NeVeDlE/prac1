@@ -22,7 +22,7 @@
 				<ul class="side-menu">
 
                     <li class="slide">
-                        <a class="side-menu__item" href="#"><span class=""><i class="typcn typcn-shopping-cart side-menu__icon"></i></span><span class="side-menu__label">Store</span></a>
+                        <a class="side-menu__item" href="{{url('/store')}}"><span class=""><i class="typcn typcn-shopping-cart side-menu__icon"></i></span><span class="side-menu__label">Store</span></a>
                     </li>
 					<li class="slide">
 						<a class="side-menu__item" href="{{ url('/' . $page='icons') }}"><span class=""><i class="far fa-file-alt side-menu__icon"></i></span><span class="side-menu__label">About US</span></a>

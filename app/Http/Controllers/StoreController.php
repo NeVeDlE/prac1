@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\products;
+use App\Models\sections;
 use App\Models\store;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -19,7 +20,7 @@ class StoreController extends Controller
     public function index()
     {
         $store=store::all();
-        dd($store);
+
         return view('store.store',compact('store'));
         //
     }
@@ -47,7 +48,7 @@ class StoreController extends Controller
 
          $ex= $request->file->getClientOriginalExtension();
          $img_name=time().'.'.$ex;
-        $request->file->move(public_path(), $img_name);
+        $request->file->move(public_path('images'), $img_name);
 
 
                 store::create([
@@ -55,12 +56,10 @@ class StoreController extends Controller
                     'size' => $request->size,
                     'description' => $request->description,
                     "file_path" => $img_name,
-
-
                 ]);
         session()->flash('Add', 'T-Shirt Added');
         $store=store::all();
-        return view('store.store',compact('store'));
+        return redirect('/store');
     }
 
     /**
@@ -92,9 +91,33 @@ class StoreController extends Controller
      * @param  \App\Models\store  $store
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, store $store)
+    public function update(Request $request)
     {
         //
+        $old=store::find($request['id']);
+        $bol=0;
+
+        if($old['file_path']==$request['file']||$request['file']==null)$bol=0;
+        else $bol++;
+
+
+        $img_name=$old['file_path'];
+
+       if($bol>0){
+            $ex= $request->file->getClientOriginalExtension();
+            $img_name=time().'.'.$ex;
+            $request->file->move(public_path('images'), $img_name);
+        }
+
+        $old->update([
+            'name' => $request->name,
+            'size' => $request->size,
+            'description' => $request->description,
+            "file_path" => $img_name,
+        ]);
+        session()->flash('Edit', 'T-Shirt Edited');
+        $store=store::all();
+        return redirect('/store');
     }
 
     /**
@@ -103,8 +126,13 @@ class StoreController extends Controller
      * @param  \App\Models\store  $store
      * @return \Illuminate\Http\Response
      */
-    public function destroy(store $store)
+    public function destroy(Request $request)
     {
         //
+        $id = $request->id;
+        store::find($id)->delete();
+        session()->flash('delete','T-Shirt Deleted');
+        return redirect('/store');
+
     }
 }
