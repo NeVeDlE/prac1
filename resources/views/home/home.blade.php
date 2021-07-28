@@ -34,12 +34,12 @@
                                 </div>
                             </div>
                             <div class="row custom_column wow slideInRight" data-wow-duration="2.5s">
-                                <div class="col-lg-2 col-sm-12 col-md-2">
-                                    <a href="#" class="box text-center">
+                                <div class="col-lg-3 col-sm-12 col-md-3">
+                                    <a href="{{url('/home')}}" class="box text-center">
                                         <div class="flipper">
                                             <div class="front">
                                                 <i class="typcn typcn-shopping-cart"></i>
-                                                <h3>Store</h3>
+                                                <h3>Home</h3>
                                             </div>
                                             <div class="back">
                                                 <i class="typcn typcn-shopping-cart"></i>
@@ -48,12 +48,12 @@
                                         </div>
                                     </a>
                                 </div>
-                                <div class="col-lg-2 col-sm-12 col-md-2">
-                                    <a href="#" class="box text-center">
+                                <div class="col-lg-3 col-sm-12 col-md-3">
+                                    <a href="{{url('/store')}}" class="box text-center">
                                         <div class="flipper">
                                             <div class="front">
                                                 <i class="far fa-file-alt"></i>
-                                                <h3>About US</h3>
+                                                <h3>Store</h3>
                                             </div>
                                             <div class="back">
                                                 <i class="far fa-file-alt"></i>
@@ -62,12 +62,12 @@
                                         </div>
                                     </a>
                                 </div>
-                                <div class="col-lg-2 col-sm-12 col-md-2">
-                                    <a href="#" class="box text-center">
+                                <div class="col-lg-3 col-sm-12 col-md-3">
+                                    <a href="{{url('/market')}}" class="box text-center">
                                         <div class="flipper">
                                             <div class="front">
                                                 <i class="mdi mdi-account-card-details"></i>
-                                                <h3>Teams</h3>
+                                                <h3>Market</h3>
                                             </div>
                                             <div class="back">
                                                 <i class="mdi mdi-account-card-details"></i>
@@ -76,12 +76,12 @@
                                         </div>
                                     </a>
                                 </div>
-                                <div class="col-lg-2 col-sm-12 col-md-2">
-                                    <a href="#" class="box text-center">
+                                <div class="col-lg-3 col-sm-12 col-md-3">
+                                    <a href="{{url('/orders')}}" class="box text-center">
                                         <div class="flipper">
                                             <div class="front">
                                                 <i class="mdi mdi-account-network"></i>
-                                                <h3>Check our Managers</h3>
+                                                <h3>Orders</h3>
                                             </div>
                                             <div class="back">
                                                 <i class="mdi mdi-account-network"></i>
@@ -90,34 +90,8 @@
                                         </div>
                                     </a>
                                 </div>
-                                <div class="col-lg-2 col-sm-12 col-md-2">
-                                    <a href="#" class="box text-center">
-                                        <div class="flipper">
-                                            <div class="front">
-                                                <i class="far fa-calendar"></i>
-                                                <h3>Schedule</h3>
-                                            </div>
-                                            <div class="back">
-                                                <i class="far fa-calendar"></i>
-                                                <h3>know when our teams are going to play</h3>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-lg-2 col-sm-12 col-md-2">
-                                    <a href="#" class="box text-center">
-                                        <div class="flipper">
-                                            <div class="front">
-                                                <i class="icon ion-md-paper"></i>
-                                                <h3>News</h3>
-                                            </div>
-                                            <div class="back">
-                                                <i class="icon ion-md-paper"></i>
-                                                <h3>check out our news</h3>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
+
+
                             </div>
                         </div>
                     </section>

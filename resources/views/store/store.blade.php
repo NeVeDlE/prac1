@@ -106,8 +106,9 @@
 
         @endforeach
 
-    </div>
 
+    </div>
+    {{ $store->links('vendor.pagination.custom') }}
 
 
 

@@ -2,34 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Market;
-use App\Models\store;
+use App\Models\Orders;
 use Illuminate\Http\Request;
-
-class MarketController extends Controller
+use App\Models\Market;
+class OrdersController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
+        $market=Market::paginate(20);
+        return view('orders.orders',compact('market'));
         //
-        $store=store::paginate(20);
-
-        $search=$request['search'];
-
-        if($request['search']!=null) {
-            $items = store::where('name', 'like', '%' . $search . '%')
-                ->orderBy('name')
-                ->paginate(20);
-            $store = $items;
-        }
-
-
-        return view('market.market',compact('store'));
-
     }
 
     /**
@@ -51,27 +38,15 @@ class MarketController extends Controller
     public function store(Request $request)
     {
         //
-
-
-        market::create([
-            'user_name' => $request->user_name,
-            'user_address' => $request->user_address,
-            'phone' => $request->Phone,
-            'item_id' => $request->id,
-        ]);
-        session()->flash('Add', 'Order Added');
-
-
-        return redirect('/market');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Market  $market
+     * @param  \App\Models\Orders  $orders
      * @return \Illuminate\Http\Response
      */
-    public function show(Market $market)
+    public function show(Orders $orders)
     {
         //
     }
@@ -79,10 +54,10 @@ class MarketController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Market  $market
+     * @param  \App\Models\Orders  $orders
      * @return \Illuminate\Http\Response
      */
-    public function edit(Market $market)
+    public function edit(Orders $orders)
     {
         //
     }
@@ -91,10 +66,10 @@ class MarketController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Market  $market
+     * @param  \App\Models\Orders  $orders
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Market $market)
+    public function update(Request $request, Orders $orders)
     {
         //
     }
@@ -102,11 +77,16 @@ class MarketController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Market  $market
+     * @param  \App\Models\Orders  $orders
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Market $market)
+    public function destroy(Request $request)
     {
         //
+        $id = $request->id;
+
+        Market::find($id)->delete();
+        session()->flash('delete','Order Deleted');
+        return redirect('/orders');
     }
 }

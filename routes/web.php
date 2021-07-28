@@ -21,4 +21,5 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('store','App\Http\Controllers\StoreController');
 Route::resource('market','App\Http\Controllers\MarketController');
+Route::resource('orders','App\Http\Controllers\OrdersController');
 Route::get('/{page}', 'App\Http\Controllers\AdminController@index');

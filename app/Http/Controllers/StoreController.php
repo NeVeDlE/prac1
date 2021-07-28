@@ -19,7 +19,7 @@ class StoreController extends Controller
      */
     public function index()
     {
-        $store=store::all();
+        $store=store::paginate(20);
 
         return view('store.store',compact('store'));
         //
@@ -49,8 +49,6 @@ class StoreController extends Controller
          $ex= $request->file->getClientOriginalExtension();
          $img_name=time().'.'.$ex;
         $request->file->move(public_path('images'), $img_name);
-
-
                 store::create([
                     'name' => $request->name,
                     'size' => $request->size,
@@ -58,7 +56,7 @@ class StoreController extends Controller
                     "file_path" => $img_name,
                 ]);
         session()->flash('Add', 'T-Shirt Added');
-        $store=store::all();
+
         return redirect('/store');
     }
 
