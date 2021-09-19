@@ -6050,7 +6050,7 @@ function defaultDisplay( nodeName ) {
 			iframe.detach();
 		}
 
-		// Store the correct default display
+		// ItemAdded the correct default display
 		elemdisplay[ nodeName ] = display;
 	}
 

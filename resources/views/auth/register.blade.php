@@ -8,8 +8,9 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
+                    <form method="POST" action="{{ url('users/store') }}" enctype="multipart/form-data" >
+
+                        {{ csrf_field() }}
 
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
@@ -24,7 +25,30 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="address" class="col-md-4 col-form-label text-md-right">Address</label>
 
+                            <div class="col-md-6">
+                                <input id="address" type="text" class="form-control"  name="address" value="" required autofocus>
+
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="phone" class="col-md-4 col-form-label text-md-right">phone</label>
+                            <div class="col-md-6">
+                                <input id="phone" type="text" class="form-control"  name="phone" value="" required autofocus>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">Photo</label>
+
+                            <div class="col-md-6">
+                                <input id="file" type="file" class="form-control" name="file" autofocus>
+
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 

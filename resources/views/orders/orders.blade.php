@@ -1,9 +1,9 @@
 @extends('layouts.master')
 @section('css')
     <!-- Internal Data table css -->
-    <link href="{{ URL::asset('assets/plugins/datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::asset('assets/plugins/datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"/>
     <link href="{{ URL::asset('assets/plugins/datatable/css/buttons.bootstrap4.min.css') }}" rel="stylesheet">
-    <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"/>
     <link href="{{ URL::asset('assets/plugins/datatable/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
@@ -14,112 +14,184 @@
     <link href="{{ URL::asset('assets/plugins/multislider/multislider.css') }}" rel="stylesheet">
     <!--- Select2 css -->
     <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
+    <!--Internal  Font Awesome -->
+    <link href="{{URL::asset('assets/plugins/fontawesome-free/css/all.min.css')}}" rel="stylesheet">
+    <!--Internal   Notify -->
+    <link href="{{URL::asset('assets/plugins/notify/css/notifIt.css')}}" rel="stylesheet"/>
+    <!--Internal  treeview -->
+    <link href="{{URL::asset('assets/plugins/treeview/treeview.css')}}" rel="stylesheet" type="text/css" />
 @endsection
 @section('page-header')
-				<!-- breadcrumb -->
-				<div class="breadcrumb-header justify-content-between">
-					<div class="my-auto">
-						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto">Orders</h4>
-						</div>
-					</div>
+    <!-- breadcrumb -->
+    <div class="breadcrumb-header justify-content-between">
+        <div class="my-auto">
+            <div class="d-flex">
+                <h4 class="content-title mb-0 my-auto">Orders</h4>
+            </div>
+        </div>
 
-				</div>
-				<!-- breadcrumb -->
-                @if(session()->has('delete'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>{{ session()->get('delete') }}</strong>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                @endif
+    </div>
+    <!-- breadcrumb -->
+    @if (session()->has('delete'))
+        <script>
+            window.onload = function() {
+                notif({
+                    msg: "Item Deleted Successfully",
+                    type: "success"
+                })
+            }
+        </script>
+    @endif
+    @if (session()->has('archive'))
+        <script>
+            window.onload = function() {
+                notif({
+                    msg: "Item Archived Successfully",
+                    type: "success"
+                })
+            }
+        </script>
+    @endif
 @endsection
 @section('content')
-				<!-- row -->
-				<div class="row">
+    <!-- row -->
 
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="example1" class="table key-buttons text-md-nowrap" data-page-length='50'>
-                                <thead>
-                                <tr>
-                                    <th class="border-bottom-0">#</th>
-                                    <th class="border-bottom-0">Order ID</th>
-                                    <th class="border-bottom-0">T-Shirt Name</th>
-                                    <th class="border-bottom-0">T-shirt ID</th>
-                                    <th class="border-bottom-0">Customer Name</th>
-                                    <th class="border-bottom-0">Customer Address</th>
-                                    <th class="border-bottom-0">Customer Phone</th>
-                                    <th class="border-bottom-0">Order Date</th>
-                                    <th class="border-bottom-0">Delete</th>
+    <div class="row">
 
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {{$i=0}}
-                                @foreach ($market as $item)
-                                {{$i++}}
-                                    <tr>
-                                        <td>{{ $i }}</td>
-                                        <td>{{ $item->id }}</td>
-                                        <td>{{ $item->item->name }}</td>
-                                        <td>{{ $item->item_id }}</td>
-                                        <td>{{ $item->user_name }}</td>
-                                        <td>{{ $item->user_address }}</td>
-                                        <td>{{ $item->phone }}</td>
-                                        <td>{{ $item->created_at }}</td>
-                                        <td>
-                                            <button class="btn btn-outline-danger btn-sm " data-pro_id="{{ $item->id }}"
-                                                    data-tshirt_name="{{ $item->item->name }}" data-toggle="modal"
-                                                    data-target="#modaldemo9">Delete</button>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="example" class="table key-buttons text-md-nowrap" data-page-length='50'>
+                    <thead>
+                    <tr>
+                        <th class="border-bottom-0">#</th>
+                        <th class="border-bottom-0">Order ID</th>
+                        <th class="border-bottom-0">T-Shirt Name</th>
+                        <th class="border-bottom-0">T-shirt ID</th>
+                        <th class="border-bottom-0">T-shirt Price</th>
+                        <th class="border-bottom-0">Customer Name</th>
+                        <th class="border-bottom-0">Customer Address</th>
+                        <th class="border-bottom-0">Customer Phone</th>
+                        <th class="border-bottom-0">Customer Email</th>
+                        <th class="border-bottom-0">Customer Role</th>
+                        <th class="border-bottom-0">Order Status</th>
+                        <th class="border-bottom-0">Order Date</th>
+                        <th class="border-bottom-0">Operations</th>
 
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-
-                        </div>
-
-                    </div>
-
-
-				</div>
-				<!-- row closed -->
-			</div>
-			<!-- Container closed -->
-		</div>
-		<!-- main-content closed -->
-
-                <!-- delete -->
-                <div class="modal fade" id="modaldemo9" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Delete Order</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <form action="orders/destroy" method="post">
-                                {{ method_field('delete') }}
-                                {{ csrf_field() }}
-                                <div class="modal-body">
-                                    <p>?Are You Sure About This</p><br>
-                                    <input type="hidden" name="id" id="id" value="">
-                                    <input class="form-control" name="tshirt_name" id="tshirt_name" type="text" readonly>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @php $i=0; @endphp
+                    @foreach ($market as $item)
+                        @php $i++ @endphp
+                        <tr>
+                            <td>{{ $i }}</td>
+                            <td>{{ $item->id }}</td>
+                            <td>{{ $item->item_name }}</td>
+                            <td>{{ $item->item_id }}</td>
+                            <td>{{ $item->item_price }}</td>
+                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->address }}</td>
+                            <td>{{ $item->phone }}</td>
+                            <td>{{ $item->email }}</td>
+                            <td>{{ $item->role }}</td>
+                            @if($item->status==1)
+                                <td class="text-success">Done</td>
+                            @elseif($item->status==2)
+                                <td class="text-warning">Pending</td>
+                            @else
+                                <td class="text-danger">Canceled</td>
+                            @endif
+                            <td>{{ $item->created_at }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button aria-expanded="false" aria-haspopup="true"
+                                            class="btn ripple btn-primary btn-sm" data-toggle="dropdown"
+                                            type="button">Operations<i class="fas fa-caret-down ml-1"></i></button>
+                                    <div class="dropdown-menu tx-13">
+                                        <a class="dropdown-item " href="{{ url('edit_order') }}/{{ $item->id }}"><i>Edit Order</i></a>
+                                        <a class="dropdown-item  " href=" {{URL::route('status_show', [$item->id]) }}"><i class="text-success fas">Change Status</i></a>
+                                        <a class="dropdown-item  "data-toggle="modal"data-target="#modaldemo9"data-id="{{$item->id}}" href="#"><i class="text-warning fas fa-exchange-alt">Archive Order</i></a>
+                                        <a class="dropdown-item " href="#"><i class="text-success fas fa-print">  Print Order</i></a>
+                                        <a class="dropdown-item" data-toggle="modal"data-target="#modaldemo8"href="#" ><i class=" text-danger fas fa-trash-alt">Delete Order</i></a>
+                                    </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+
+                </table>
+
+            </div>
+            {{ $market->links('vendor.pagination.custom') }}
+
+        </div>
+
+
+    </div>
+    <!-- row closed -->
+    </div>
+    <!-- Container closed -->
+    </div>
+    <!-- main-content closed -->
+
+    <!-- delete -->
+    <div class="modal fade" id="modaldemo8" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <!-- end delete -->
+                <form action="orders/destroy" method="post">
+                    {{ method_field('delete') }}
+                    {{ csrf_field() }}
+                    <div class="modal-body">
+                        <p>?Are You Sure About This</p><br>
+                        <input type="hidden" name="id" id="id" value="">
+                        <input type="hidden" name="type" id="type" value="1">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modaldemo9" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="orders/destroy" method="post">
+                    {{ method_field('delete') }}
+                    {{ csrf_field() }}
+                    <div class="modal-body">
+                        <p>?Are You Sure About This</p><br>
+                        <input type="hidden" name="id" id="id" value="">
+                        <input type="hidden" name="type" id="type" value="2">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- end delete -->
 @endsection
 @section('js')
     <script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
@@ -149,15 +221,31 @@
     <!-- Internal Modal js-->
     <script src="{{ URL::asset('assets/js/modal.js') }}"></script>
     <script>
-    $('#modaldemo9').on('show.bs.modal', function(event) {
-    var button = $(event.relatedTarget)
-    var pro_id = button.data('pro_id')
-    var product_name = button.data('tshirt_name')
-    var modal = $(this)
+        $('#modaldemo8').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
 
-    modal.find('.modal-body #id').val(pro_id);
-    modal.find('.modal-body #tshirt_name').val(product_name);
-    })
+            var modal = $(this)
+
+            modal.find('.modal-body #id').val(id);
+
+        })
     </script>
+    <script>
+        $('#modaldemo9').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var id = button.data('id')
+
+            var modal = $(this)
+
+            modal.find('.modal-body #id').val(id);
+
+        })
+    </script>
+
+    <script src="{{URL::asset('assets/plugins/treeview/treeview.js')}}"></script>
+    <!--Internal  Notify js -->
+    <script src="{{URL::asset('assets/plugins/notify/js/notifIt.js')}}"></script>
+    <script src="{{URL::asset('assets/plugins/notify/js/notifit-custom.js')}}"></script>
 
 @endsection

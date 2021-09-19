@@ -72,25 +72,36 @@
                                     <img class="w-100" style="height: 300px;width: 20px"
                                          src="{{asset('images/'.$item['file_path'])}}" alt="product-image">
                                     <a href="#modaldemo3" data-id="{{ $item->id }}" data-effect="effect-scale"
-                                       data-name="{{ $item->name }}" data-size="{{ $item->size }}"
-                                       data-description="{{ $item->description }}" data-toggle="modal" class="adtocart">
+                                       data-name="{{ $item->name }}" data-price="{{ $item['price']-(($item['price']/100)*$item['discount']) }}"
+                                       data-toggle="modal" class="adtocart">
                                         <i class="las la-shopping-cart "></i>
                                     </a>
                                 </div>
+                                @php $price=0;
+                                @endphp
                                 <div class="text-center pt-3">
                                     <h3 class="h6 mb-2 mt-4 font-weight-bold text-uppercase">{{$item['name']}}</h3>
-                                    <span class="tx-15 ml-auto">
-												 {{$item['description']}}
-											</span>
-                                    <h4 class="h5 mb-0 mt-2 text-center font-weight-bold text-danger">
-                                        Size: {{$item['size']}}</h4>
+                                    @if($item['discount']>0)
+                                        <h4 class="h5 mb-0 mt-2 text-center font-weight-bold text-danger">
+                                            ${{$item['price']-(($item['price']/100)*$item['discount'])}}
+                                            <span
+                                                class="text-secondary font-weight-normal tx-13 ml-1 prev-price">${{$item['price']}}</span>
+                                        </h4>
+                                    @else
+
+                                        <h4 class="h5 mb-0 mt-2 text-center font-weight-bold text-danger">
+
+                                            ${{$item['price']}}
+                                        </h4>
+
+                                    @endif
                                 </div>
                             </div>
                         </div>
                     </div>
                 @endforeach
 
-                    {{ $store->links('vendor.pagination.custom') }}
+                {{ $store->links('vendor.pagination.custom') }}
 
             </div>
             <div>
@@ -115,39 +126,23 @@
                     <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
                             aria-hidden="true">&times;</span></button>
                 </div>
-                <form action={{route('market.store')}} method="post" enctype="multipart/form-data" autocomplete="off">
+                <form action="{{route('orders.store')}}" method="post" enctype="multipart/form-data" autocomplete="off">
 
-                    {{ csrf_field() }}
+                    @csrf
                     <div class="modal-body">
                         <div class="form-group">
                             <input type="hidden" name="id" id="id" value="">
+                            <input type="hidden" name="user_id" id="user_id" value="{{Auth::user()->id}}">
                             <label for="exampleInputEmail1">T-Shirt Name:</label>
                             <input type="text" class="form-control" id="name" name="name" value="" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">T-Shirt Size:</label>
-                            <input type="text" class="form-control" id="size" name="size" value="" readonly>
+                            <label for="exampleInputEmail1">T-Shirt Price:</label>
+                            <input type="text" class="form-control" id="price" name="price" value="" readonly>
                         </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">T-Shirt Description:</label>
-                            <input type="text" class="form-control" id="description" name="description" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Your Name:</label>
-                            <input type="text" class="form-control" id="user_name" name="user_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Your Address:</label>
-                            <input type="text" class="form-control" id="user_address" name="user_address" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Your Phone Number:</label>
-                            <input type="text" class="form-control" id="Phone" name="Phone" required>
-                        </div>
-
                     </div>
                     <div class="modal-footer">
-                        <button class="btn ripple btn-success" type="submit">Pay</button>
+                        <button class="btn ripple btn-success" type="submit">Make An Order</button>
                         <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Cancel</button>
                     </div>
                 </form>
@@ -171,14 +166,14 @@
             var button = $(event.relatedTarget)
             var id = button.data('id')
             var name = button.data('name')
-            var size = button.data('size')
-            var description = button.data('description')
+            var price = button.data('price')
+
             var modal = $(this)
 
             modal.find('.modal-body #id').val(id);
-            modal.find('.modal-body #size').val(size);
             modal.find('.modal-body #name').val(name);
-            modal.find('.modal-body #description').val(description);
+            modal.find('.modal-body #price').val(price);
+
         })
     </script>
 @endsection

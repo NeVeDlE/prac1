@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\products;
-use App\Models\sections;
+use App\Models\Orders;
+
 use App\Models\store;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Response;
-use App\Images;
-use Image;
+use Illuminate\Support\Facades\Storage;
+
 
 class StoreController extends Controller
 {
@@ -19,9 +21,9 @@ class StoreController extends Controller
      */
     public function index()
     {
-        $store=store::paginate(20);
+        $store = store::paginate(21);
 
-        return view('store.store',compact('store'));
+        return view('store.store', compact('store'));
         //
     }
 
@@ -36,34 +38,37 @@ class StoreController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * ItemAdded a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         //
-     //  $path = $request->file('file')->store('public/images');
+        //  $path = $request->file('file')->store('public/images');
 
-         $ex= $request->file->getClientOriginalExtension();
-         $img_name=time().'.'.$ex;
+        $ex = $request->file->getClientOriginalExtension();
+        $img_name = time() . '.' . $ex;
         $request->file->move(public_path('images'), $img_name);
-                store::create([
-                    'name' => $request->name,
-                    'size' => $request->size,
-                    'description' => $request->description,
-                    "file_path" => $img_name,
-                ]);
+        store::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'discount' => $request->discount,
+            "file_path" => $img_name,
+        ]);
         session()->flash('Add', 'T-Shirt Added');
+        $user = User::get();
+        $added = store ::latest()->first();
+        Notification::send($user, new \App\Notifications\ItemAdded($added));
+        return back();
 
-        return redirect('/store');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\store  $store
+     * @param \App\Models\store $store
      * @return \Illuminate\Http\Response
      */
     public function show(store $store)
@@ -74,7 +79,7 @@ class StoreController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\store  $store
+     * @param \App\Models\store $store
      * @return \Illuminate\Http\Response
      */
     public function edit(store $store)
@@ -85,51 +90,54 @@ class StoreController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\store  $store
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\store $store
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
     {
         //
-        $old=store::find($request['id']);
-        $bol=0;
+        $old = store::find($request['id']);
+        $bol = 0;
 
-        if($old['file_path']==$request['file']||$request['file']==null)$bol=0;
+        if ($old['file_path'] == $request['file'] || $request['file'] == null) $bol = 0;
         else $bol++;
 
 
-        $img_name=$old['file_path'];
+        $img_name = $old['file_path'];
 
-       if($bol>0){
-            $ex= $request->file->getClientOriginalExtension();
-            $img_name=time().'.'.$ex;
+        if ($bol > 0) {
+            $ex = $request->file->getClientOriginalExtension();
+            $img_name = time() . '.' . $ex;
             $request->file->move(public_path('images'), $img_name);
         }
 
         $old->update([
             'name' => $request->name,
-            'size' => $request->size,
-            'description' => $request->description,
+            'price' => $request->price,
+            'discount' => $request->discount,
             "file_path" => $img_name,
         ]);
         session()->flash('Edit', 'T-Shirt Edited');
-        $store=store::all();
+        $store = store::all();
         return redirect('/store');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\store  $store
+     * @param \App\Models\store $store
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
     {
         //
-        $id = $request->id;
-        store::find($id)->delete();
-        session()->flash('delete','T-Shirt Deleted');
+
+
+        $Details = store::where('id', $request->id)->first();
+        Storage::disk('public_uploads')->delete($Details->file_path);
+        $Details->delete();
+        session()->flash('delete', 'T-Shirt Deleted');
         return redirect('/store');
 
     }

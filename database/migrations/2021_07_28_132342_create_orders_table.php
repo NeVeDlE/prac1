@@ -13,8 +13,22 @@ class CreateOrdersTable extends Migration
      */
     public function up()
     {
+
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->text('name');
+            $table->text('address');
+            $table->string('phone');
+            $table->text('email');
+            $table->text('role');
+            $table->integer('status');
+            $table->integer('item_price');
+            $table->text('item_name');
+            $table->unsignedBigInteger('item_id');
+            $table->softDeletes();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('item_id')->references('id')->on('stores')->onDelete('cascade');
             $table->timestamps();
         });
     }

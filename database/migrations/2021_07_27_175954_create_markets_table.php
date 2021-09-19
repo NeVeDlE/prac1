@@ -19,7 +19,7 @@ class CreateMarketsTable extends Migration
             $table->text('user_address');
             $table->integer('phone');
             $table->unsignedBigInteger('item_id');
-            $table->foreign('item_id')->references('id')->on('stores');
+            $table->foreign('item_id')->references('id')->on('stores')->onDelete('cascade');
             $table->timestamps();
         });
     }
