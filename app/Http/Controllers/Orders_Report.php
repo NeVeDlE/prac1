@@ -31,7 +31,7 @@ class Orders_Report extends Controller
             }
         }
         else{
-            $market = Orders::select('*')->where('id','=',$request->id3)->get();
+            $market = Orders::select('*')->where('id','=',$request->id)->get();
             return view('reports.orders_report')->withDetails($market);
         }
     }

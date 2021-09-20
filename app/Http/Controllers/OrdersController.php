@@ -44,7 +44,8 @@ class OrdersController extends Controller
     {
         //
 
-        $user = User::find($request->user_id);
+        $user = User::find($request->user_id)->first();
+
 
         Orders::create([
             'name' => $user->name,

@@ -92,7 +92,7 @@ class MyOrdersController extends Controller
         $item = Orders::where('id', $request->id);
 
         $item->update([
-            'status'=>'2',
+            'status'=>'3',
 
         ]);
         $user = User::where('role','user')->get();

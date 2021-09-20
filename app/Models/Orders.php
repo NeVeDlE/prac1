@@ -17,4 +17,8 @@ class Orders extends Model
     public function item_user(){
     return $this->belongsTo('App\Models\users');
 }
+    protected $casts = [
+
+        'role' => 'array',
+    ];
 }

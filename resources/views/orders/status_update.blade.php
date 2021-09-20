@@ -75,12 +75,7 @@
                                        value="{{ $order->email }}" required
                                        readonly>
                             </div>
-                            <div class="col">
-                                <label for="inputName" class="control-label">Customer Role</label>
-                                <input type="text" class="form-control"
-                                       value="{{ $order->role }}" required
-                                       readonly>
-                            </div>
+
                         </div>
                         <div class="row">
                             <div class="col">

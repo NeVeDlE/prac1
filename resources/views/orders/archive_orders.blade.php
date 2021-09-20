@@ -93,7 +93,9 @@
                             <td>{{ $item->address }}</td>
                             <td>{{ $item->phone }}</td>
                             <td>{{ $item->email }}</td>
-                            <td>{{ $item->role }}</td>
+                            <td>@foreach($item->role as $role)
+                                    {{$role}}
+                                @endforeach</td>
                             @if($item->status==1)
                                 <td class="text-success">Done</td>
                             @elseif($item->status==2)
